@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.forms import formset_factory, inlineformset_factory
 from django.shortcuts import render, get_object_or_404
@@ -35,7 +37,7 @@ class RecipeDetailsView(generic.DetailView):
 IngredientsFormSet = inlineformset_factory(Recipes, Recipe2Ingredient, fields=('ingredient', 'quantity', 'unit'))
 
 
-class RecipeWithIngredientsView(generic.CreateView):
+class RecipeWithIngredientsView(LoginRequiredMixin, generic.CreateView):
     model = Recipes
     fields = ['name', 'description']
     template_name = 'catalog/new_recipe.html'
@@ -53,7 +55,7 @@ class RecipeWithIngredientsView(generic.CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         ingredients = context["ingredients"]
-        form.instance.author = User(id=1)
+        form.instance.author = self.request.user
         self.object = form.save()
         if ingredients.is_valid():
             ingredients.instance = self.object
@@ -87,7 +89,7 @@ def user_profile(request, user_id):
 def save_recipe(request):
     print(request.POST)
     new_recipe = Recipes(name=request.POST['name'], description=request.POST['description'], create_date=timezone.now())
-    user = User(id=1)
+    user = request.user()
     new_recipe.author = user
     new_recipe.save()
 
@@ -99,20 +101,10 @@ def recipes(request, recipe_id):
     return render(request, 'catalog/recipe_details.html', {'object': recipe})
 
 
+@login_required(login_url='/accounts/login/')
 def my_recipes(request, user_id):
     user = User.objects.get(pk=user_id)
     print("User=", user)
     recipes_by_user = Recipes.objects.all().filter(author=user)
     return render(request, 'catalog/my_recipes.html', {'recipes_list': recipes_by_user})
 
-
-def new_recipe(request):
-    RecipeFormSet = formset_factory(RecipeForm, can_delete=True, can_order=True, extra=3)
-    if request.method == 'POST':
-        formset = RecipeFormSet(request.POST, request.FILES)
-        if formset.is_valid():
-            # do something with the formset.cleaned_data
-            pass
-    else:
-        formset = RecipeFormSet()
-    return render(request, 'catalog/new_recipe.html', {'formset': formset})

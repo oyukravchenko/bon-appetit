@@ -114,3 +114,16 @@ img#sim {
     width: 32px;
     height: 32px
 }
+
+div#loginbtn {
+    width: 120px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align-last: center;
+    padding-right: 10px;
+    font-family: Titulium;
+}
+
+div#loginbtn {
+    color: white;
+}

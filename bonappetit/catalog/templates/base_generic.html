@@ -16,14 +16,23 @@
             <img id="sim" src="{% static 'catalog/images/search-24.png' %}"/>
             <input type="text" maxlength="100">
         </div>
+        {% if user.is_authenticated %}
+
+
 
         <div id="menu" class="dropdown">
-          <button class="dropbtn"><img class="user" src="{% static 'catalog/images/cook-64_1.png' %}"></button>
-          <div class="dropdown-content">
-            <div><a href="">Edit profile</a></div>
-            <div><a href="{% url 'catalog:my_recipes'  1 %}">My recipes</a></div>
-          </div>
+            <button class="dropbtn"><img class="user" src="{% static 'catalog/images/cook-64_1.png' %}"></button>
+            <div class="dropdown-content">
+                <div><a href="">Edit profile</a></div>
+                <div><a href="{% url 'catalog:my_recipes'  user.id %}">My recipes</a></div>
+                <div><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></div>
+            </div>
         </div>
+        {% else %}
+         <div id="loginbtn">
+             <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+         </div>
+       {% endif %}
     </div>
     <div id="content">{% block content %}{% endblock %}</div>
 </body>

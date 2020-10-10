@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 # Create your models here.
@@ -19,7 +20,7 @@ class Recipes(models.Model):
     description = models.TextField()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    create_date = models.DateTimeField()
+    create_date = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
         return self.name
@@ -50,7 +51,10 @@ class UnitType(models.TextChoices):
 
 
 class Recipe2Ingredient(models.Model):
-    recipe = models.ForeignKey(Recipes, on_delete=models.PROTECT)
-    ingredient = models.ForeignKey(Ingredients, on_delete=models.PROTECT)
+    recipe = models.ForeignKey(Recipes, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredients, on_delete=models.CASCADE)
     quantity = models.FloatField()
     unit = models.CharField(max_length=10, choices=UnitType.choices)
+
+    def __str__(self):
+        return str(self.recipe) + str(self.ingredient) + str(self.quantity)

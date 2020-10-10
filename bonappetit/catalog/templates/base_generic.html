@@ -3,17 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Bon appetit</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'catalog/style.css' %}">
 </head>
 <body>
-    <div id="header" style="height: 70px; width: 100%; background-color: #224fa8; display: table;">
-        <div id="logo" style="width: 40%; display: table-cell; padding: 15px"><a href="{% url 'catalog:index' %}">logo</a></div>
-        <div id="search" style="width: 40%;display: table-cell;vertical-align: middle;text-align-last: right;">
-            <input type="text" maxlength="100"></div>
-        <div id="menu" style="width: 20%; display: table-cell;vertical-align: middle;text-align-last: right; padding-right:10px;">
-            <div>Edit profile</div>
-            <div><a href="{% url 'catalog:my_recipes'  1 %}">MyRecipes</a></div>
+    <div id="header">
+        <div id="logo">
+            <a href="{% url 'catalog:index' %}"><img src="{% static 'catalog/images/logo1.png' %}"/></a>
+        </div>
+        <div id="search">
+            <img id="sim" src="{% static 'catalog/images/search-24.png' %}"/>
+            <input type="text" maxlength="100">
+        </div>
+
+        <div id="menu" class="dropdown">
+          <button class="dropbtn"><img class="user" src="{% static 'catalog/images/cook-64_1.png' %}"></button>
+          <div class="dropdown-content">
+            <div><a href="">Edit profile</a></div>
+            <div><a href="{% url 'catalog:my_recipes'  1 %}">My recipes</a></div>
+          </div>
         </div>
     </div>
-    <div>{% block content %}{% endblock %}</div>
+    <div id="content">{% block content %}{% endblock %}</div>
 </body>
 </html>

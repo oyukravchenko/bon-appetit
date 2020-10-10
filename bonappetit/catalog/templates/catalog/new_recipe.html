@@ -1,20 +1,20 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
+<div id="new_recipe">
 <table>
     {{ formset }}
 </table>
 
-<h3>Add new recipe</h3>
+<h4>Add new recipe</h4>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<form method="post">{% csrf_token %}
+<form id="create_recipe" method="post">{% csrf_token %}
     {{ form.as_p }}
-    <h2>Ingredients</h2>
-    <table>{{ ingredients.as_table }}</table>
+    <h3>Ingredients</h3>
+    <table id="ingredientsList">{{ ingredients.as_table }}</table>
     <input type="submit" value="Save">
 </form>
 
 </form>
-
+</div>
 {% endblock %}

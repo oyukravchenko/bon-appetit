@@ -31,9 +31,6 @@ class RecipeDetailsView(generic.DetailView):
     model = Recipes
     template_name = 'catalog/recipe_details.html'
 
-    # def get(self, request, *args, **kwargs):
-    #     super.get(self, request, *args, **kwargs)
-
 
 IngredientsFormSet = inlineformset_factory(Recipes, Recipe2Ingredient, fields=('ingredient', 'quantity', 'unit'))
 

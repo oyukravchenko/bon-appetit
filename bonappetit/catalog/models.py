@@ -57,4 +57,4 @@ class Recipe2Ingredient(models.Model):
     unit = models.CharField(max_length=10, choices=UnitType.choices)
 
     def __str__(self):
-        return str(self.recipe) + str(self.ingredient) + str(self.quantity)
+        return str(self.recipe) + ": " + str(self.ingredient) + " - " + str(self.quantity) + " " + str(self.unit)
